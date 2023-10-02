@@ -35,7 +35,7 @@ export default class App extends React.Component {
         this.findAnimalById(id)
         if (this.state.dataId != null || this.state.dataId != undefined) {
             AnimalService.deleteById(id)
-            alert("animal excluido com sucesso: ")
+            alert("動物は正常に削除されました: ")
         }
     }
 
@@ -45,7 +45,7 @@ export default class App extends React.Component {
 
         const insertId=AnimalService.addData(file);
         if(insertId==null || insertId==undefined){
-            alert("Não foi possivel inserir o novo animal")
+            alert("新しい動物を挿入できません")
         }
     }
 
@@ -68,7 +68,7 @@ export default class App extends React.Component {
                         dataId: response._array[0]
                     })
                 } else {
-                    alert("id não encontrado")
+                    alert("IDが見つかりません")
                 }
             }), (error) => {
                 console.log(error);
@@ -81,37 +81,39 @@ export default class App extends React.Component {
         
         const animalList = data.map((item, key) => {
             return (
-                <>
-                    <Text >id:{item.id} nome:{item.nome}</Text>
-                </>
-            )
-        })
+              <View key={key} style={styles.animalContainer}>
+                <Text>ID: {item.id}</Text>
+                <Text>Nome do Animal: {item.nome}</Text>
+                <View style={styles.divider} />
+              </View>
+            );
+          });
 
         return (
 
             <View style={styles.container}>
 
-                <Text style={{ fontSize: 20, paddingBottom: 20 }}>Lista de Animais</Text>
+                <Text style={{ fontSize: 20, paddingBottom: 20 }}>動物を挿入する</Text>
                 <TextInput
-                    placeholder="digite o id"
+                    placeholder="動物ID"
                     style={styles.textInput}
                     onChangeText={text => { this.setState({ value: text }) }}
                     value={value}
                 />
                <View style={styles.containerTouch}>
-                    <TouchableOpacity onPress={() => { value == null ? alert("O campo de id não pode ser vazio") : this.deleteAnimal(value) }} style={{ alignItems: "center", backgroundColor: 'green' }}>
+                    <TouchableOpacity onPress={() => { value == null ? alert("ID フィールドを空にすることはできません") : this.deleteAnimal(value) }} style={{ alignItems: "center", backgroundColor: '#00B3AD' }}>
                         <Icon name="md-remove" size={30} color="white" />
                     </TouchableOpacity>
                 </View>
                 <TextInput
-                    placeholder="digite o nome do novo animal"
+                    placeholder="動物の名前"
                     style={styles.textInput}
                     onChangeText={textAdd => { this.setState({ dataInsert: textAdd }) }}
                     value={dataInsert}
                 />
                
                 <View style={styles.containerTouch}>
-                    <TouchableOpacity onPress={() =>  dataInsert == null ? alert("O campo de nome não pode ser vazio") :this.insertAnimal(dataInsert)} style={{ alignItems: "center", backgroundColor: 'green' }}>
+                    <TouchableOpacity onPress={() =>  dataInsert == null ? alert("名前フィールドを空にすることはできません") :this.insertAnimal(dataInsert)} style={{ alignItems: "center", backgroundColor: '#00B3AD' }}>
                         <Icon name="md-add" size={30} color="white" />
                     </TouchableOpacity>
                 </View>
@@ -133,11 +135,22 @@ const styles = StyleSheet.create({
         alignItems: "center", 
         width: 200, 
         height: 40, 
-        borderColor: 'gray', 
+        borderColor: '#FF6B1A', 
         borderWidth: 1 
     },
     containerTouch:{
         width: 200,
          padding: 10
+    },
+
+    animalContainer: {
+        marginVertical: 10,
+    },
+
+    divider: {
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
+        marginVertical: 5,
     }
+    
 });
